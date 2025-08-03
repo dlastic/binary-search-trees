@@ -10,6 +10,31 @@ class Tree {
   constructor(array) {
     this.root = createBalancedBST(array);
   }
+
+  insert(value) {
+    if (this.root === null) {
+      this.root = new Node(value);
+      return;
+    }
+
+    function insertRecursively(node) {
+      if (value < node.data) {
+        if (node.left === null) {
+          node.left = new Node(value);
+        } else {
+          insertRecursively(node.left);
+        }
+      } else if (value > node.data) {
+        if (node.right === null) {
+          node.right = new Node(value);
+        } else {
+          insertRecursively(node.right);
+        }
+      }
+    }
+
+    insertRecursively(this.root);
+  }
 }
 
 function buildTree(array) {
