@@ -70,6 +70,18 @@ class Tree {
 
     this.root = deleteRecursively(this.root, value);
   }
+
+  find(value) {
+    function findRecursively(node) {
+      if (node === null) return null;
+
+      if (node.data === value) return node;
+      if (value < node.data) return findRecursively(node.left);
+      if (value > node.data) return findRecursively(node.right);
+    }
+
+    return findRecursively(this.root);
+  }
 }
 
 function buildTree(array) {
@@ -99,3 +111,7 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
     prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
   }
 };
+
+const tree = new Tree([10, 5, 15, 3, 7, 12, 18, 1, 2, 4, 6, 9]);
+prettyPrint(tree.root);
+console.log(tree.find(100));
