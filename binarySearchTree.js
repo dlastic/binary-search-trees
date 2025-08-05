@@ -82,6 +82,19 @@ class Tree {
 
     return findRecursively(this.root);
   }
+
+  levelOrderForEach(callback) {
+    if (typeof callback !== "function") throw new Error("Callback required!");
+    const queue = [];
+    if (this.root !== null) queue.push(this.root);
+
+    while (queue.length > 0) {
+      const node = queue.shift();
+      callback(node);
+      if (node.left !== null) queue.push(node.left);
+      if (node.right !== null) queue.push(node.right);
+    }
+  }
 }
 
 function buildTree(array) {
@@ -112,6 +125,9 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 
-const tree = new Tree([10, 5, 15, 3, 7, 12, 18, 1, 2, 4, 6, 9]);
+const tree = new Tree([8, 4, 12, 2, 6, 10, 14, 1, 3, 5, 7, 9, 11, 13, 15]);
 prettyPrint(tree.root);
-console.log(tree.find(100));
+
+tree.levelOrderForEach((node) => {
+  console.log(node.data);
+});
