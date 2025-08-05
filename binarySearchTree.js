@@ -35,6 +35,41 @@ class Tree {
 
     insertRecursively(this.root);
   }
+
+  deleteItem(value) {
+    function findMin(node) {
+      while (node.left !== null) {
+        node = node.left;
+      }
+      return node;
+    }
+
+    function deleteRecursively(node, value) {
+      if (node === null) {
+        return node;
+      }
+
+      if (value < node.data) {
+        node.left = deleteRecursively(node.left, value);
+      } else if (value > node.data) {
+        node.right = deleteRecursively(node.right, value);
+      } else {
+        if (node.left === null && node.right === null) {
+          return null;
+        }
+
+        if (node.left === null) return node.right;
+        if (node.right === null) return node.left;
+
+        const succ = findMin(node.right);
+        node.data = succ.data;
+        node.right = deleteRecursively(node.right, succ.data);
+      }
+      return node;
+    }
+
+    this.root = deleteRecursively(this.root, value);
+  }
 }
 
 function buildTree(array) {
@@ -51,3 +86,16 @@ function createBalancedBST(array) {
   const sortedArray = [...new Set(array.sort((a, b) => a - b))];
   return buildTree(sortedArray);
 }
+
+const prettyPrint = (node, prefix = "", isLeft = true) => {
+  if (node === null) {
+    return;
+  }
+  if (node.right !== null) {
+    prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+  }
+  console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
+  if (node.left !== null) {
+    prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+  }
+};
