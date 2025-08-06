@@ -95,6 +95,45 @@ class Tree {
       if (node.right !== null) queue.push(node.right);
     }
   }
+
+  preOrderForEach(callback) {
+    if (typeof callback !== "function") throw new Error("Callback required!");
+
+    function traverse(node) {
+      if (node === null) return;
+      callback(node);
+      traverse(node.left);
+      traverse(node.right);
+    }
+
+    traverse(this.root);
+  }
+
+  inOrderForEach(callback) {
+    if (typeof callback !== "function") throw new Error("Callback required!");
+
+    function traverse(node) {
+      if (node === null) return;
+      traverse(node.left);
+      callback(node);
+      traverse(node.right);
+    }
+
+    traverse(this.root);
+  }
+
+  postOrderForEach(callback) {
+    if (typeof callback !== "function") throw new Error("Callback required!");
+
+    function traverse(node) {
+      if (node === null) return;
+      traverse(node.left);
+      traverse(node.right);
+      callback(node);
+    }
+
+    traverse(this.root);
+  }
 }
 
 function buildTree(array) {
@@ -125,9 +164,11 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 
-const tree = new Tree([8, 4, 12, 2, 6, 10, 14, 1, 3, 5, 7, 9, 11, 13, 15]);
+const tree = new Tree([8, 4, 12, 2, 6, 10, 14, 1, 3, 5, 7]);
 prettyPrint(tree.root);
 
-tree.levelOrderForEach((node) => {
-  console.log(node.data);
+const treeArray = [];
+tree.postOrderForEach((node) => {
+  treeArray.push(node.data);
 });
+console.log(treeArray.join(", "));
