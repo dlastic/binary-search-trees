@@ -164,6 +164,32 @@ class Tree {
 
     return findDepth(this.root);
   }
+
+  isBalanced() {
+    function height(node) {
+      if (node === null) return -1;
+      return 1 + Math.max(height(node.left), height(node.right));
+    }
+
+    function check(node) {
+      if (node === null) return true;
+
+      const leftHeight = height(node.left);
+      const rightHeight = height(node.right);
+
+      if (Math.abs(leftHeight - rightHeight) > 1) return false;
+
+      return check(node.left) && check(node.right);
+    }
+
+    return check(this.root);
+  }
+
+  rebalance() {
+    const values = [];
+    this.inOrderForEach((node) => values.push(node.data));
+    this.root = buildTree(values);
+  }
 }
 
 function buildTree(array) {
@@ -194,5 +220,5 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 
-const tree = new Tree([8, 4, 12, 2, 6, 10, 14, 1, 3, 5, 7]);
+const tree = new Tree([8, 4, 12, 6, 10, 14, 5, 7]);
 prettyPrint(tree.root);
