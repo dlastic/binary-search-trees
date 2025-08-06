@@ -134,6 +134,36 @@ class Tree {
 
     traverse(this.root);
   }
+
+  height(value) {
+    const node = this.find(value);
+    if (node === null) return null;
+
+    function heightRecursively(node) {
+      if (node === null) return -1;
+      return (
+        1 +
+        Math.max(heightRecursively(node.left), heightRecursively(node.right))
+      );
+    }
+
+    return heightRecursively(node);
+  }
+
+  depth(value) {
+    function findDepth(node, depth = 0) {
+      if (node === null) return null;
+      if (node.data === value) return depth;
+
+      if (value < node.data) {
+        return findDepth(node.left, depth + 1);
+      } else {
+        return findDepth(node.right, depth + 1);
+      }
+    }
+
+    return findDepth(this.root);
+  }
 }
 
 function buildTree(array) {
@@ -166,9 +196,3 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 
 const tree = new Tree([8, 4, 12, 2, 6, 10, 14, 1, 3, 5, 7]);
 prettyPrint(tree.root);
-
-const treeArray = [];
-tree.postOrderForEach((node) => {
-  treeArray.push(node.data);
-});
-console.log(treeArray.join(", "));
