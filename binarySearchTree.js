@@ -220,5 +220,4 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   }
 };
 
-const tree = new Tree([8, 4, 12, 6, 10, 14, 5, 7]);
-prettyPrint(tree.root);
+export { Tree, prettyPrint };
